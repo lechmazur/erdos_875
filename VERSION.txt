@@ -30,6 +30,7 @@ Comparator audit:
   landrun v0.1.15
 
 Reference notes:
+  docs/reference/admissible_carry_note_erdos875.pdf
   docs/reference/admissible_carry_note_erdos875.tex
 
 Exact published repository identity:

@@ -88,9 +88,9 @@ Audit metadata:
 
 ## Reference Note
 
-The reference TeX file is explanatory source material, not a trusted proof
-artifact:
+The reference note is explanatory source material, not a trusted proof artifact:
 
+- [`docs/reference/admissible_carry_note_erdos875.pdf`](docs/reference/admissible_carry_note_erdos875.pdf)
 - [`docs/reference/admissible_carry_note_erdos875.tex`](docs/reference/admissible_carry_note_erdos875.tex)
 
 ## Notes
