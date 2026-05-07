@@ -4,10 +4,10 @@ build:
 	lake build AdmissibleCarry
 
 challenge:
-	lake env lean Challenge.lean
+	lake build Challenge
 
 solution:
-	lake env lean Solution.lean
+	lake build Solution
 
 audit:
 	scripts/audit_sorries.sh .

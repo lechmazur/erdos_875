@@ -15,9 +15,8 @@ and the resulting eventual real gap bound.
 
 ## Trusted Statement
 
-Read [`Challenge.lean`](Challenge.lean) first. It imports the source vocabulary
-modules used in the public theorem statement and contains the comparator
-target:
+Read [`Challenge.lean`](Challenge.lean) first. It imports only `Mathlib` and
+contains the public comparator target:
 
 - `AdmissibleCarry.published_final_construction`
 
@@ -53,9 +52,7 @@ To check the Lean proof:
 
 ```bash
 lake exe cache get
-lake build AdmissibleCarry
-lake env lean Challenge.lean
-lake env lean Solution.lean
+lake build AdmissibleCarry Challenge Solution
 scripts/audit_sorries.sh .
 tools/check_no_sorry.sh
 scripts/audit_imports.sh .

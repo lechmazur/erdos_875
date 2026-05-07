@@ -5,7 +5,7 @@ published bundle.
 
 | Content | Lean declaration | File | Status |
 | --- | --- | --- | --- |
-| Trusted comparator statement | `AdmissibleCarry.published_final_construction` | `Challenge.lean` | Statement-only, intentionally uses `sorry` |
+| Trusted comparator statement | `AdmissibleCarry.published_final_construction` | `Challenge.lean` | Imports only `Mathlib`; statement-only, intentionally uses `sorry` |
 | Comparator solution module | `AdmissibleCarry.published_final_construction` | `Solution.lean` | Proved from the checked proof library and accepted by comparator |
 | Paper-admissible finite-subset wrapper | `AdmissibleCarry.PaperAdmSet` | `AdmissibleCarry/CoeffDiff.lean` | Defined |
 | Abstract legal schedule | `AdmissibleCarry.LegalSchedule` | `AdmissibleCarry/Stage.lean` | Defined |
@@ -26,6 +26,10 @@ The declaration listed in `comparator.json` is:
 ```text
 AdmissibleCarry.published_final_construction
 ```
+
+The comparator statement writes the paper-admissibility condition and exponent
+directly. `Solution.lean` proves that statement from `PaperAdmSet` and
+`LegalSchedule.gapExponent` by definitional unfolding.
 
 ## Scope Notes
 

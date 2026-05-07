@@ -17,8 +17,8 @@ The proof library does not introduce project axioms, `unsafe` definitions,
 ## Statement/Proof Split
 
 `Challenge.lean` is the trusted statement file for comparator. It imports only
-the source vocabulary modules needed to state the public endpoint and
-intentionally contains a `sorry` proof for the theorem being checked.
+`Mathlib`, states the public endpoint directly, and intentionally contains a
+`sorry` proof for the theorem being checked.
 
 `Solution.lean` imports the proved `AdmissibleCarry` library. Comparator checks
 that the theorem proved in `Solution.lean` has the same statement as

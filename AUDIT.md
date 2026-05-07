@@ -1,8 +1,8 @@
 # Auditing This Lean Proof
 
-The trusted statement is [`Challenge.lean`](Challenge.lean). It imports the
-source vocabulary modules that define `PaperAdmSet` and
-`LegalSchedule.gapExponent`, then states the public comparator target:
+The trusted statement is [`Challenge.lean`](Challenge.lean). It imports only
+`Mathlib` and states the public comparator target directly, with the
+paper-admissibility condition and exponent written inline:
 
 - `AdmissibleCarry.published_final_construction`
 
@@ -13,9 +13,7 @@ endpoint declarations.
 ## Standard Lean Check
 
 ```bash
-lake build AdmissibleCarry
-lake env lean Challenge.lean
-lake env lean Solution.lean
+lake build AdmissibleCarry Challenge Solution
 scripts/audit_sorries.sh .
 tools/check_no_sorry.sh
 scripts/audit_imports.sh .
@@ -37,25 +35,11 @@ scripts/audit_imports.sh .
 The published bundle itself was then validated with:
 
 ```text
-diff -qr /home/lech/erdos_875/AdmissibleCarry /mnt/r/published/erdos_875/AdmissibleCarry
-diff -q /home/lech/erdos_875/AdmissibleCarry.lean /mnt/r/published/erdos_875/AdmissibleCarry.lean
-diff -q /home/lech/erdos_875/lakefile.toml /mnt/r/published/erdos_875/lakefile.toml
-diff -q /home/lech/erdos_875/lean-toolchain /mnt/r/published/erdos_875/lean-toolchain
-diff -q /home/lech/erdos_875/lake-manifest.json /mnt/r/published/erdos_875/lake-manifest.json
+lake build AdmissibleCarry Challenge Solution
 scripts/audit_sorries.sh .
 tools/check_no_sorry.sh
 scripts/audit_imports.sh .
-lean Challenge.lean
-lean Solution.lean
-lean AdmissibleCarry.lean
-lean AdmissibleCarry/ConcreteCeil.lean
 ```
-
-For the direct `lean` checks above, `LEAN_PATH` was pointed at the already-built
-dependency artifacts from `/home/lech/erdos_875`, with the published bundle's
-own `.lake/build/lib/lean` replacing the source project build path. This avoids
-rebuilding all of mathlib on the mounted publication directory while still
-checking the published wrapper files and top-level proof modules.
 
 The no-placeholder and import audit commands completed successfully.
 
