@@ -8,7 +8,7 @@ This file records proof-route state, not detailed progress.
   two-sided local carry, cached `CarryState`, block-owner enumeration, and
   max-one scale asymptotics. Status: complete through the bundled
   `final_construction` endpoint. Source:
-  `docs/reference/admissible_carry_note_lean_formalization_v10.tex`.
+  `docs/reference/admissible_carry_note_erdos875.tex`.
 
 ## Abandoned Routes
 

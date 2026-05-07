@@ -3,7 +3,7 @@
 ## Main Target
 
 Formalize the admissible-carry construction from
-`docs/reference/admissible_carry_note_erdos875_new_version.tex`.
+`docs/reference/admissible_carry_note_erdos875.tex`.
 
 The public mathematical endpoint is:
 
@@ -14,8 +14,8 @@ The public mathematical endpoint is:
 
 ## Lean-Normalized Route
 
-Use the zero-indexed v10 blueprint from
-`docs/reference/admissible_carry_note_lean_formalization_v10.tex`.
+Use the zero-indexed admissible-carry route documented in
+`docs/reference/admissible_carry_note_erdos875.tex`.
 
 The internal construction is an abstract `LegalSchedule` with finite stages `F j`,
 scales `M j`, counts `N j`, and block lengths `k j`. The concrete schedule is

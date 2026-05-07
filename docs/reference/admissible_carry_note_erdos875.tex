@@ -34,7 +34,7 @@
 An infinite admissible set with $a_{n+1}-a_n\le n^{3+2\sqrt2}$ and little-$o$ gaps}
 \author{GPT-5.5 Pro\thanks{Large language model by OpenAI; performed nearly all of the mathematical derivation and LaTeX drafting through prompted interaction, with human prompting, review, and editing.}
 \and
-Lech Mazur\thanks{Human contributor, prompter, curator, editor, auditor, and responsible contact for public posting.}}
+Lech Mazur\thanks{Human contributor, prompter, curator, editor, auditor, and responsible contact for the public repository.}}
 \date{}
 
 \begin{document}
@@ -49,7 +49,7 @@ and, more strongly in the asymptotic sense,
 \[
         a_{n+1}-a_n=o\bigl(n^{3+2\sqrt2}\bigr).
 \]
-This is a partial positive answer to the displayed pointwise absolute polynomial-gap formulation; the exponent is not claimed to be optimal, and this construction does not address the relative-gap condition $a_{n+1}/a_n\to1$; indeed, its consecutive ratios have unbounded limsup.  The construction is by blocks: the inter-block gap equals the internal spacing of the preceding block, although each block itself has large internal multiplicative spread.  The proof uses a carry invariant for cardinality-graded subset-sum differences.  A companion Lean~4/mathlib formalization is to be posted at \url{https://github.com/lechmazur/erdos_875/}; the Lean code is intended as the trusted formal proof artifact, while this note gives the human-readable construction and proof.
+This is a partial positive answer to the displayed pointwise absolute polynomial-gap formulation; the exponent is not claimed to be optimal, and this construction does not address the relative-gap condition $a_{n+1}/a_n\to1$; indeed, its consecutive ratios have unbounded limsup.  The construction is by blocks: the inter-block gap equals the internal spacing of the preceding block, although each block itself has large internal multiplicative spread.  The proof uses a carry invariant for cardinality-graded subset-sum differences.  A companion Lean~4/mathlib formalization is public at \url{https://github.com/lechmazur/erdos_875/}; the Lean code is the checked formal proof artifact, while this note gives the human-readable construction and proof.
 \end{abstract}
 
 \section{Introduction}
@@ -92,7 +92,7 @@ and, asymptotically,
 
 For the displayed pointwise absolute polynomial-gap subquestion, Theorem~\ref{thm:main} gives a positive answer for every $c\ge 3+2\sqrt2$ with the all-$n$ convention in the problem statement.  The finite-theory obstruction recalled below rules out $c<1$; this note does not address the remaining range $1\le c<3+2\sqrt2$.
 
-A companion Lean~4/mathlib formalization is being prepared for public posting at \url{https://github.com/lechmazur/erdos_875/}.  The intended trusted statement is the formally checked existence of an infinite admissible set with the displayed normalized absolute-gap bound and the corresponding little-$o$ conclusion.  The Lean development should be read as the checked proof artifact once posted; this written note gives the explanatory construction, notation, and context.
+A companion Lean~4/mathlib formalization is public at \url{https://github.com/lechmazur/erdos_875/}.  The public bundle states the comparator target in \texttt{Challenge.lean}, proves it in \texttt{Solution.lean} from the checked \texttt{AdmissibleCarry} library, and records the audit boundary and toolchain metadata in the repository documentation.  The checked statement gives the existence of an infinite admissible set with the displayed normalized absolute-gap bound and the corresponding little-$o$ conclusion.  The Lean development should be read as the checked proof artifact; this written note gives the explanatory construction, notation, and context.
 
 Theorem~\ref{thm:main} concerns absolute gaps, not relative gaps.  With the notation of the construction below, the first two elements of the $j$th block are $M_j$ and $M_j(k_j+2)$, so their ratio is $k_j+2$.  Since $N_{j-1}\to\infty$ and $k_j=\lceil 2(1+N_{j-1})^{1+\sqrt2}\rceil$, these relative jumps tend to infinity.  Consequently this construction has $\limsup_{n\to\infty} a_{n+1}/a_n=\infty$.  Equivalently, the first internal gap in $B_j$ is $M_j(k_j+1)$, much larger than the first element $M_j$ of that block.  On the other hand, the inter-block ratio is small:
 \[
@@ -765,12 +765,12 @@ which exactly matches the internal spacing.  Thus improving the exponent by this
 
 \section*{Code and formalization}
 
-A companion Lean~4/mathlib formalization of the main theorem is to be posted at
-\url{https://github.com/lechmazur/erdos_875/}.  The intended public repository follows the same division of roles as the related Erd\H{o}s formalization repositories: the machine-checked Lean development is the trusted statement/proof artifact, and the present document supplies notation, motivation, historical context, and a human-readable proof.  The LaTeX proof above is written to keep the main invariants close to their formal counterparts: graded differences, the local carry lemma, carry-good closure, the recursive block construction, and the final gap estimate.
+A companion Lean~4/mathlib formalization of the main theorem is public at
+\url{https://github.com/lechmazur/erdos_875/}.  The repository contains the pinned Lean toolchain, the checked \texttt{AdmissibleCarry} proof library, the public comparator statement \texttt{Challenge.lean}, the corresponding proof module \texttt{Solution.lean}, and audit metadata including \texttt{AUDIT.md}, \texttt{ASSUMPTIONS.md}, \texttt{STATEMENT\_MAP.md}, \texttt{VERSION.txt}, and \texttt{SHA256SUMS.txt}.  The repository follows the same division of roles as the related Erd\H{o}s formalization repositories: the machine-checked Lean development is the trusted statement/proof artifact, and the present document supplies notation, motivation, historical context, and a human-readable proof.  The LaTeX proof above is written to keep the main invariants close to their formal counterparts: graded differences, the local carry lemma, carry-good closure, the recursive block construction, and the final gap estimate.
 
 \medskip
 \noindent\textit{Authorship, Lean proof, and verification disclosure.}
-GPT-5.5 Pro is listed as first author because it produced nearly all of the mathematical derivation, proof structuring, and LaTeX drafting through prompted interaction.  Lech Mazur prompted, selected, audited, edited, curated, and is responsible for the public posting of this draft.  The mathematical claims should be checked against the Lean artifact once the repository is public.  This public draft has not been independently refereed, and neither the Lean proof nor the other checks should be regarded as journal peer review.  The literature/contextual claims should be read with the usual caveat that the cited Erd\H{o}s Problems pages are catalogues rather than complete literature reviews.
+GPT-5.5 Pro is listed as first author because it produced nearly all of the mathematical derivation, proof structuring, and LaTeX drafting through prompted interaction.  Lech Mazur prompted, selected, audited, edited, curated, and is responsible for the public repository and this draft.  The mathematical claims should be checked against the public Lean artifact.  This public draft has not been independently refereed, and neither the Lean proof nor the repository audit checks should be regarded as journal peer review.  The literature/contextual claims should be read with the usual caveat that the cited Erd\H{o}s Problems pages are catalogues rather than complete literature reviews.
 
 \begin{thebibliography}{10}
 

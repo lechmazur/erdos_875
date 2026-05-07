@@ -5,11 +5,10 @@
 Use `AdmissibleCarry` as the Lean project and namespace. This matches the main
 construction rather than the problem number.
 
-## 2026-05-07: Active Reference Version
+## 2026-05-07: Active Reference Note
 
-Use `docs/reference/admissible_carry_note_lean_formalization_v10.tex` as the
-Lean blueprint and `docs/reference/admissible_carry_note_erdos875_new_version.tex`
-as the mathematical source.
+Use `docs/reference/admissible_carry_note_erdos875.tex` as the published
+reference note and mathematical source for the checked construction.
 
 ## 2026-05-07: Initial Import Policy
 

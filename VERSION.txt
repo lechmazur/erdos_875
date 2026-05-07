@@ -30,8 +30,7 @@ Comparator audit:
   landrun v0.1.15
 
 Reference notes:
-  docs/reference/admissible_carry_note_lean_formalization_v10.tex
-  docs/reference/admissible_carry_note_erdos875_new_version.tex
+  docs/reference/admissible_carry_note_erdos875.tex
 
 Exact published repository identity:
   Use `git rev-parse HEAD` in this published bundle.

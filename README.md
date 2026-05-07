@@ -5,13 +5,19 @@ construction for Erdos problem #875.
 
 The final bundled theorem proves the existence of a concrete infinite
 paper-admissible set of natural numbers, a strict increasing enumeration, the
-normalized consecutive-gap limit
+normalized consecutive-gap limit:
 
-```text
-(a (n + 1) - a n) / (n + 1)^(3 + 2 * sqrt 2) -> 0,
-```
+<p>
+  <img src="docs/assets/readme-normalized-gap-limit-light.png#gh-light-mode-only" alt="The normalized consecutive-gap quotient tends to zero." width="420">
+  <img src="docs/assets/readme-normalized-gap-limit-dark.png#gh-dark-mode-only" alt="The normalized consecutive-gap quotient tends to zero." width="420">
+</p>
 
-and the resulting eventual real gap bound.
+and the resulting eventual real gap bound:
+
+<p>
+  <img src="docs/assets/readme-eventual-gap-bound-light.png#gh-light-mode-only" alt="The eventual real gap bound." width="680">
+  <img src="docs/assets/readme-eventual-gap-bound-dark.png#gh-dark-mode-only" alt="The eventual real gap bound." width="680">
+</p>
 
 ## Trusted Statement
 
@@ -80,13 +86,12 @@ Audit metadata:
 - [Comparator/audit workflow](AUDIT.md)
 - [Checksums](SHA256SUMS.txt)
 
-## Reference Notes
+## Reference Note
 
-The reference TeX files are explanatory source material, not trusted proof
-artifacts:
+The reference TeX file is explanatory source material, not a trusted proof
+artifact:
 
-- [`docs/reference/admissible_carry_note_lean_formalization_v10.tex`](docs/reference/admissible_carry_note_lean_formalization_v10.tex)
-- [`docs/reference/admissible_carry_note_erdos875_new_version.tex`](docs/reference/admissible_carry_note_erdos875_new_version.tex)
+- [`docs/reference/admissible_carry_note_erdos875.tex`](docs/reference/admissible_carry_note_erdos875.tex)
 
 ## Notes
 
