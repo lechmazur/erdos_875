@@ -1,0 +1,834 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{xurl}
+\usepackage[unicode=true,colorlinks=true,citecolor=blue,linkcolor=blue,urlcolor=blue]{hyperref}
+\usepackage{bookmark}
+
+\hypersetup{
+    pdftitle={On an absolute-gap variant of Erdos Problem 875: an infinite admissible set with normalized and little-o gaps},
+    pdfauthor={GPT-5.5 Pro and Lech Mazur},
+    pdfsubject={Admissible sets and subset-sum cardinality separation},
+    pdfkeywords={Erdos Problem 875, admissible sets, subset sums, gap bounds, Lean formalization}
+}
+
+\allowdisplaybreaks[1]
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+\newtheorem*{problem875}{Erd\H{o}s Problem \#875 and the absolute-gap variant considered here}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\D}{\Delta}
+\newcommand{\Sig}{\Sigma}
+
+\title{On an absolute-gap variant of Erd\H{o}s Problem \#875:\\
+An infinite admissible set with $a_{n+1}-a_n\le n^{3+2\sqrt2}$ and little-$o$ gaps}
+\author{GPT-5.5 Pro\thanks{Large language model by OpenAI; performed nearly all of the mathematical derivation and LaTeX drafting through prompted interaction, with human prompting, review, and editing.}
+\and
+Lech Mazur\thanks{Human contributor, prompter, curator, editor, auditor, and responsible contact for public posting.}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Erd\H{o}s Problem \#875 asks how dense an infinite admissible set can be, equivalently how slowly its increasing enumeration can grow.  One associated absolute-gap question asks whether the consecutive gaps can be bounded by a power of the index.  We give an explicit block construction for this absolute polynomial-gap question.  Namely, we construct an infinite admissible set $A=\{a_1<a_2<\cdots\}\subset\N$ such that
+\[
+        a_{n+1}-a_n\le n^{3+2\sqrt2}\qquad(n\ge1)
+\]
+and, more strongly in the asymptotic sense,
+\[
+        a_{n+1}-a_n=o\bigl(n^{3+2\sqrt2}\bigr).
+\]
+This is a partial positive answer to the displayed pointwise absolute polynomial-gap formulation; the exponent is not claimed to be optimal, and this construction does not address the relative-gap condition $a_{n+1}/a_n\to1$; indeed, its consecutive ratios have unbounded limsup.  The construction is by blocks: the inter-block gap equals the internal spacing of the preceding block, although each block itself has large internal multiplicative spread.  The proof uses a carry invariant for cardinality-graded subset-sum differences.  A companion Lean~4/mathlib formalization is to be posted at \url{https://github.com/lechmazur/erdos_875/}; the Lean code is intended as the trusted formal proof artifact, while this note gives the human-readable construction and proof.
+\end{abstract}
+
+\section{Introduction}
+
+Throughout, $\N=\{1,2,3,\ldots\}$.  The symbols $\ll$, $\gg$, $\asymp$, $O(\cdot)$, $o(\cdot)$, and $\omega(\cdot)$ have their usual asymptotic meanings; all implied constants are absolute unless a dependence is explicitly indicated.
+
+For a set $A\subset\N$ and an integer $r\ge1$, write
+\[
+        S_r(A)=\left\{\sum_{a\in U}a: U\subseteq A,\ |U|=r\right\}.
+\]
+
+\begin{problem875}
+Let $A=\{a_1<a_2<\cdots\}\subset\N$ be an infinite set such that the sets $S_r(A)$ are disjoint for distinct $r\ge1$.  How fast can such a sequence grow?  How small can the gaps $a_{n+1}-a_n$ be?  In particular, for which real numbers $c$ is it possible that
+\[
+        a_{n+1}-a_n\le n^c
+\]
+for all $n\ge1$?
+\end{problem875}
+
+Following Erd\H{o}s's formulation as recorded in \cite{Erdos1998}, the Erd\H{o}s Problems site lists this as Erd\H{o}s Problem \#875, a problem of Deshouillers and Erd\H{o}s and an infinite version of Erd\H{o}s Problem \#874, the corresponding finite extremal problem \cite{Bloom874,Bloom875}.  This note gives an explicit construction for the displayed pointwise absolute polynomial-gap subquestion of Problem \#875, improving the exponent obtained by the crude counting-only extraction from the Erd\H{o}s--Nicolas--S\'ark\"ozy construction described below.  The chosen finite prefix also makes the displayed inequality hold literally for every $n\ge1$ at the exponent constructed here.  We make no optimality claim for Problem \#875 as a whole, do not classify all possible exponents, do not address the relative-gap question, and do not attempt a complete historical survey beyond the sources cited here.  The Erd\H{o}s Problems pages are used here as guides to the problem statements and literature pointers rather than as a complete literature review.
+
+We use the following terminology, following the standard terminology in this problem.  A set $A\subset\N$ is called \emph{admissible} if, whenever $U,V\subseteq A$ are finite and
+\[
+        \sum_{u\in U}u=\sum_{v\in V}v,
+\]
+then $|U|=|V|$.  Equivalently, the sets $S_r(A)$ are pairwise disjoint.  Including the empty subset in the definition makes no difference for subsets of $\N$, since no nonempty subset has sum $0$.  Equal sums coming from subsets of the same cardinality are allowed.
+
+The main result is the following partial positive answer to the absolute polynomial-gap subquestion in Erd\H{o}s Problem \#875.  It does not solve the relative-gap question or the optimal-exponent problem.
+
+\begin{theorem}[An admissible set with normalized and little-$o$ absolute gaps]\label{thm:main}
+There is an infinite admissible set $A=\{a_1<a_2<\cdots\}\subset\N$ such that
+\[
+        a_{n+1}-a_n\le n^{3+2\sqrt2}\qquad(n\ge1),
+\]
+and, asymptotically,
+\[
+        a_{n+1}-a_n=o\bigl(n^{3+2\sqrt2}\bigr).
+\]
+\end{theorem}
+
+For the displayed pointwise absolute polynomial-gap subquestion, Theorem~\ref{thm:main} gives a positive answer for every $c\ge 3+2\sqrt2$ with the all-$n$ convention in the problem statement.  The finite-theory obstruction recalled below rules out $c<1$; this note does not address the remaining range $1\le c<3+2\sqrt2$.
+
+A companion Lean~4/mathlib formalization is being prepared for public posting at \url{https://github.com/lechmazur/erdos_875/}.  The intended trusted statement is the formally checked existence of an infinite admissible set with the displayed normalized absolute-gap bound and the corresponding little-$o$ conclusion.  The Lean development should be read as the checked proof artifact once posted; this written note gives the explanatory construction, notation, and context.
+
+Theorem~\ref{thm:main} concerns absolute gaps, not relative gaps.  With the notation of the construction below, the first two elements of the $j$th block are $M_j$ and $M_j(k_j+2)$, so their ratio is $k_j+2$.  Since $N_{j-1}\to\infty$ and $k_j=\lceil 2(1+N_{j-1})^{1+\sqrt2}\rceil$, these relative jumps tend to infinity.  Consequently this construction has $\limsup_{n\to\infty} a_{n+1}/a_n=\infty$.  Equivalently, the first internal gap in $B_j$ is $M_j(k_j+1)$, much larger than the first element $M_j$ of that block.  On the other hand, the inter-block ratio is small:
+\[
+        \frac{\min B_{j+1}}{\max B_j}
+        =\frac{M_{j+1}}{M_j k_j^2}
+        =1+\frac1{k_j}+\frac1{k_j^2}
+        \longrightarrow 1.
+\]
+Thus the construction separates the absolute-gap issue from any claim about consecutive ratios tending to $1$.
+
+For comparison with the finite theory, let $K(N)$ be the maximum possible cardinality of an admissible subset of $\{1,\ldots,N\}$.  This finite problem goes back to Erd\H{o}s and is recorded as Erd\H{o}s Problem \#874, whose central question was whether $K(N)\sim 2N^{1/2}$ \cite{Erdos1962,Bloom874}.  Straus introduced the term admissible and gave lower-bound constructions showing that the constant $2$ cannot be improved \cite{Straus1966}.  Deshouillers and Freiman proved the asymptotic upper bound
+\[
+        K(N)\le (2+o(1))\sqrt N
+\]
+\cite{DF1}.  In a second paper they proved the corresponding large-$N$ exact form of Erd\H{o}s's finite conjecture \cite[Theorem~1]{DF2}; the Erd\H{o}s Problems page for \#874 records this as the settlement of the finite problem for all sufficiently large $N$ \cite{Bloom874}.  Some related literature studies stronger stratified variants of finite subset-sum separation; here we use only the admissibility condition defined above \cite{Nicolas1999}.
+
+The finite upper bound gives a simple necessary growth condition for any infinite admissible set.  If $A=\{a_1<a_2<\cdots\}$ is admissible, then $A\cap[1,a_n]$ is an admissible subset of $\{1,\ldots,a_n\}$ with at least $n$ elements.  Thus, for every fixed $\eps>0$ and all sufficiently large $n$,
+\[
+        n\le (2+\eps)\sqrt{a_n},
+        \qquad\text{so}\qquad
+        a_n\ge \frac{n^2}{(2+\eps)^2}.
+\]
+Equivalently,
+\[
+        a_n\ge (1/4-o(1))n^2.
+\]
+In particular, a gap bound $a_{n+1}-a_n\le n^c$ for all sufficiently large $n$ is impossible when $c<1$: if $c<0$, then $n^c<1$ eventually although the gaps are positive integers, while if $0\le c<1$, such a bound would imply $a_n=O(n^{c+1})=o(n^2)$.  This is only a necessary condition; it does not suggest that the borderline exponent $c=1$ is attainable.
+
+Erd\H{o}s, Nicolas, and S\'ark\"ozy proved the existence of an infinite admissible set with
+\[
+        |A\cap[1,x]|\gg x^{5-2\sqrt6}
+\]
+\cite[Theorem~2]{ENS1991}.  Indeed, if $|A\cap[1,x]|\ge Cx^\alpha$ for all large $x$, then taking $x=(2n/C)^{1/\alpha}$ gives $a_n\ll n^{1/\alpha}$.  For the Erd\H{o}s--Nicolas--S\'ark\"ozy construction this yields
+\[
+        a_n\ll n^{1/(5-2\sqrt6)}=n^{5+2\sqrt6}.
+\]
+Consequently $a_{n+1}-a_n\le a_{n+1}\ll n^{5+2\sqrt6}$, and the constant implicit in $\ll$ can be absorbed into $n^{c-(5+2\sqrt6)}$ for every $c>5+2\sqrt6$.  Hence that construction already gives $a_{n+1}-a_n\le n^c$ eventually for every exponent strictly larger than $5+2\sqrt6$.  The construction below improves this ENS-derived absolute polynomial-gap comparison to the explicit exponent $3+2\sqrt2$ in the little-$o$ sense.  As recorded in Corollary~\ref{cor:growth}, it also gives
+\[
+        |A\cap[1,x]|=\omega\bigl(x^{1/(4+2\sqrt2)}\bigr),
+\]
+and hence, in particular, $|A\cap[1,x]|\gg_\beta x^\beta$ for every fixed $\beta<1/(4+2\sqrt2)$.  Here $1/(4+2\sqrt2)\approx0.1464$, compared with $5-2\sqrt6\approx0.1010$ in the cited Erd\H{o}s--Nicolas--S\'ark\"ozy construction.
+
+\section{Graded differences}
+
+For a finite set $B\subset\Z$, write
+\[
+        \Sig(B)=\sum_{b\in B}b,
+\]
+with the convention that $\Sig(\varnothing)=0$.
+When $B\subset\N$, every subset sum from $B$ lies in $[0,\Sig(B)]$; this positivity is the only context in which we use $\Sig(B)$ as an upper bound for subset sums.
+
+For a finite set $B\subset\Z$ and an integer $t$, define
+\[
+\D_t(B)=
+\left\{
+\sum_{u\in U}u-\sum_{v\in V}v:
+U,V\subseteq B,\ |U|-|V|=t
+\right\}.
+\]
+Empty subsets are allowed in this definition.  This convention is harmless for positive sets and is part of the definition for general finite subsets of $\Z$.  Thus $0\in \D_t(B)$ means that two subsets of $B$ of cardinality difference $t$ have the same sum.  For finite sets of integers, possibly including negative integers, we use an auxiliary extension of the same word admissible for this cardinality-graded subset-sum condition: $B$ is admissible if no equality of two subset sums occurs with different subset cardinalities.  This extension is used only for the $\D_t$-language; the infinite set constructed in the theorem is a subset of $\N$.
+
+\begin{lemma}\label{lem:admissible-delta}
+A finite set $B\subset\Z$ is admissible if and only if
+\[
+        0\notin \D_t(B)\qquad\text{for every integer }t\ne 0.
+\]
+\end{lemma}
+
+\begin{proof}
+This is just the definition.  An equality of two subset sums with cardinality difference $t$ is exactly an element $0\in \D_t(B)$.
+\end{proof}
+
+For an integer $k\ge1$, put
+\[
+        C_k=\{1+i(k+1):0\le i<k\}.
+\]
+Every element of $C_k$ is congruent to $1$ modulo $k+1$.  Therefore any sum of $r$ distinct elements of $C_k$ is congruent to $r$ modulo $k+1$.  Since $0\le r\le k$, this residue determines $r$.  Thus, if two subset sums from $C_k$ are equal, the two subset cardinalities are equal, and hence $C_k$ is admissible.  We shall use the elementary facts
+\[
+        |C_k|=k,
+        \qquad
+        \max C_k=k^2,
+        \qquad
+        \Sig(C_k)=\frac{k^3+k}{2}.
+\]
+Also define
+\[
+        Q_k=k^2+k+1.
+\]
+For an integer $M$ and a finite set $B\subset\Z$, write
+\[
+        MB=\{Mb:b\in B\}
+\]
+for the dilation of $B$ by $M$.
+
+\section{The local carry lemma}
+
+The key point is that a small error near a multiple of $Q_k$ determines the cardinality defect.
+
+\begin{lemma}[local carry]\label{lem:local-carry}
+Let $m\ge1$ be an integer, and put
+\[
+        C_m=\{1+i(m+1):0\le i<m\},
+        \qquad
+        Q=m^2+m+1.
+\]
+Suppose $Y\in \D_t(C_m)$ and
+\[
+        Y=Qw-u
+\]
+with $u,w\in\Z$ satisfying
+\[
+        |u|<\frac m4,
+        \qquad
+        |w|<\frac m2.
+\]
+Then
+\[
+        t=w-u.
+\]
+\end{lemma}
+
+\begin{proof}
+The case $m=1$ is immediate.  Then $|u|<1/4$ and $|w|<1/2$ force $u=w=0$, so $Y=0$.  Since $C_1=\{1\}$, the only way to have $0\in\D_t(C_1)$ is $t=0$, which is $w-u$.  Hence assume $m\ge2$.
+
+Choose subsets realizing the given membership $Y\in\D_t(C_m)$.  After cancelling their common part, write
+\[
+        Y=\sum_{i=0}^{m-1}\eps_i\bigl(1+i(m+1)\bigr),
+        \qquad
+        \eps_i\in\{-1,0,1\},
+\]
+where $\eps_i=1$ if the $i$th element of $C_m$ lies only in the first subset, $\eps_i=-1$ if it lies only in the second subset, and $\eps_i=0$ otherwise.  Cancelling common elements changes neither the difference $Y$ nor the cardinality defect $t$.  Then
+\[
+        t=\sum_i\eps_i,
+        \qquad
+        Y=t+(m+1)I,
+        \qquad
+        I=\sum_i i\eps_i.
+\]
+Since $Q=m^2+m+1\equiv1\pmod {m+1}$, the equation $Y=Qw-u$ gives
+\[
+        t\equiv w-u\pmod {m+1}.
+\]
+Put $t_0=w-u$.  From $|w|<m/2$ and $|u|<m/4$ we have $|t_0|<3m/4$.  Also $|t|\le m$ from the representation $t=\sum_i\eps_i$ with $m$ summands in $\{-1,0,1\}$.  If $t=t_0+\ell(m+1)$ with $|\ell|\ge2$, then
+\[
+        |t|\ge 2(m+1)-|t_0|>m,
+\]
+which is impossible.  Hence the only possible values of $t$ are
+\[
+        t=t_0,
+        \qquad
+        t=t_0+(m+1),
+        \qquad
+        t=t_0-(m+1).
+\]
+The two shifted cases are the only possible wraparound obstructions modulo $m+1$.  We rule them out by extremal bounds on $I$; the strict inequalities $|u|<m/4$ and $|w|<m/2$ are used exactly in this exclusion.
+
+Assume first that
+\[
+        t=t_0+(m+1).
+\]
+Let $a=u-w=-t_0$.  Then $a$ is an integer, $|a|<3m/4$, and
+\[
+        t=m+1-a.
+\]
+Since $t=\sum_i\eps_i\le m$ and $a$ is an integer, we have $a\ge1$.  The identity $t+(m+1)I=Qw-u$, together with $u=w+a$, gives
+\[
+        m+1-a+(m+1)I=(m^2+m+1)w-(w+a)=(m+1)mw-a,
+\]
+so
+\[
+        I=mw-1.
+\]
+On the other hand, define $d_i=1-\eps_i\in\{0,1,2\}$.  Since
+\[
+        \sum_i d_i=m-t=a-1,
+\]
+the total $a-1$ is nonnegative, and since $0\le i\le m-1$ and $d_i\ge0$, we have
+\[
+        \sum_i i d_i\le (m-1)\sum_i d_i=(a-1)(m-1).
+\]
+Therefore
+\[
+        I
+        =\frac{m(m-1)}2-\sum_i i d_i
+        \ge
+        L:=\frac{m(m-1)}2-(a-1)(m-1).
+\]
+But $u=w+a$ and $|u|<m/4$, so $w<m/4-a$.  Hence
+\[
+        I=mw-1<R:=\frac{m^2}{4}-ma-1.
+\]
+These two inequalities are incompatible, since
+\[
+        L-R
+        =
+        \left(
+        \frac{m(m-1)}2-(a-1)(m-1)
+        \right)
+        -
+        \left(
+        \frac{m^2}{4}-ma-1
+        \right)
+        =
+        \frac{m^2}{4}+\frac m2+a>0.
+\]
+Thus we would have $I\ge L>R>I$, a contradiction.  Hence $t=t_0+(m+1)$ is impossible.
+
+If $t=t_0-(m+1)$, then $-Y\in\D_{-t}(C_m)$ and
+\[
+        -Y=Q(-w)-(-u).
+\]
+The hypotheses $|u|<m/4$ and $|w|<m/2$ are preserved under this sign change.  For the negated difference the corresponding residue representative is
+\[
+        (-w)-(-u)=-t_0,
+\]
+and the assumed relation gives
+\[
+        -t=-t_0+(m+1).
+\]
+This is exactly the already excluded positive shifted case with $m$ unchanged and with $(Y,t,u,w)$ replaced by $(-Y,-t,-u,-w)$.  Therefore the two wraparound alternatives are impossible, leaving the unique residue-compatible possibility
+\[
+        t=t_0=w-u.
+\]
+\end{proof}
+
+\section{Carry-good pairs and closure}
+
+The next invariant is the mechanism that lets the construction place a new block close to the old scale.  Informally, if a cardinality-graded difference from the old set lands exactly on a multiple of the current modulus $M$, then the multiple records the cardinality defect.  This is the ``carry'' that will be passed to the local block.
+
+\begin{definition}
+Let $A\subset\N$ be finite and let $M$ be a positive integer.  We say that $(A,M)$ is \emph{carry-good} if:
+\begin{enumerate}
+    \item $A\subset [1,M)\cap\N$;
+    \item for every $T\in\Z$, every $D\in \D_T(A)$, and every $q\in\Z$, if $D=Mq$, then $T=q$.
+\end{enumerate}
+The condition is representation-wise in the following sense: if the same integer multiple of $M$ arises from graded differences with several cardinality defects, then the displayed implication applies to each such defect separately.
+\end{definition}
+
+\begin{proposition}[carry-good implies admissible]\label{prop:carry-good-admissible}
+If $(A,M)$ is carry-good, then the finite positive set $A$ is admissible.
+\end{proposition}
+
+\begin{proof}
+If $0\in \D_T(A)$, then $0=M\cdot0$, so the carry-good condition gives $T=0$.  Lemma~\ref{lem:admissible-delta} then gives admissibility.
+\end{proof}
+
+\begin{remark}[Changing the finite prefix]\label{rem:prefix}
+Finite prefixes can be changed without affecting the asymptotic estimates.  If $A_0\subset\N$ is any fixed finite admissible set, choose a positive integer initial modulus $M>\Sig(A_0)$.  Then $A_0\subset[1,M)\cap\N$.  If $D\in\D_T(A_0)$ and $D=Mq$, then the two subset sums defining $D$ lie in $[0,\Sig(A_0)]$, so $|D|<M$ and hence $q=0$.  Since $A_0$ is admissible, $D=0$ forces $T=0$.  Thus $(A_0,M)$ is carry-good.
+
+The first application of the closure lemma is also legitimate.  If $A_0=\varnothing$, then $\Sig(A_0)/M=0$.  If $A_0\ne\varnothing$ and $N_0=|A_0|$, then $\Sig(A_0)/M<1$, while the first new block length in the construction would be
+\[
+        k_1=\left\lceil 2(1+N_0)^{1+\sqrt2}\right\rceil\ge 11,
+\]
+so $\Sig(A_0)/M<1<k_1/4$.  Hence one may run the same construction with this pair as the initial pair, taking the initial cardinality to be $N_0=|A_0|$ and the initial modulus to be $M$.  For arbitrary prefixes the asymptotic proof below is applied after discarding finitely many initial block indices, with constants depending on the prefix.  If $A_0=\varnothing$, the normalization $P_j=M_j/N_{j-1}^{\tau}$ used later is simply begun after the first nonempty block, since $N_0=0$.  Changing the finite prefix preserves the eventual gap estimates only; it does not by itself impose any desired inequalities on the finitely many initial gaps.  In the proof of Theorem~\ref{thm:main} we use the specific prefix $\{1,2\}$ because it also makes the final displayed gap inequality true for every $n\ge1$.
+\end{remark}
+
+\begin{lemma}[carry closure]\label{lem:closure}
+Suppose $(A,M)$ is carry-good, and let $k\ge1$ be an integer such that
+\[
+        \frac{\Sig(A)}M<\frac k4.
+\]
+Define
+\[
+        A'=A\cup M C_k,
+        \qquad
+        M'=M Q_k=M(k^2+k+1).
+\]
+Then $(A',M')$ is carry-good.  Moreover,
+\[
+        \frac{\Sig(A')}{M'}<\frac k2.
+\]
+\end{lemma}
+
+\begin{proof}
+The strict inequality $\Sig(A)/M<k/4$ is used to satisfy the strict small-carry hypothesis in Lemma~\ref{lem:local-carry}; the strictness in the conclusion will similarly be used at the next stage.  Because $A\subset[1,M)\cap\N$ and every element of $MC_k$ is at least $M$, the union defining $A'$ is disjoint.  Also every element of $A'$ is smaller than $M'$.  Indeed, every element of $A$ is smaller than $M<M'$, and
+\[
+        \max(MC_k)=Mk^2<M(k^2+k+1)=M'.
+\]
+Thus $A'\subset[1,M')\cap\N$.
+
+Let
+\[
+        D\in\D_T(A'),
+        \qquad
+        D=M'q.
+\]
+Choose subsets $U,V\subseteq A'$ that realize $D$, and split each of them uniquely into its old part and its new part:
+\[
+        U=U_A\sqcup M U_C,
+        \qquad
+        V=V_A\sqcup M V_C,
+\]
+where $U_A,V_A\subseteq A$, $U_C,V_C\subseteq C_k$, and $M U_C=\{Mc:c\in U_C\}$, with the analogous notation for $M V_C$.  Define the old and new cardinality defects by
+\[
+        T_A=|U_A|-|V_A|,
+        \qquad
+        t=|U_C|-|V_C|.
+\]
+Then $T=T_A+t$.  Define explicitly
+\[
+        D_A=\sum_{u\in U_A}u-\sum_{v\in V_A}v\in\D_{T_A}(A).
+\]
+The new contribution is $MY$, where
+\[
+        Y=\sum_{c\in U_C}c-\sum_{d\in V_C}d\in\D_t(C_k).
+\]
+Thus
+\[
+        D=D_A+MY,
+        \qquad
+        T=T_A+t.
+\]
+Since $M'=M Q_k$, the equation $D=M'q$ gives
+\[
+        D_A+MY=M Q_k q.
+\]
+Hence
+\[
+        D_A=M(Q_k q-Y)=Me
+\]
+for the integer $e=Q_k q-Y$.  Both subset sums defining $D_A$ lie in the same interval $[0,\Sig(A)]$, so $|D_A|\le \Sig(A)$, not merely $2\Sig(A)$; this is where positivity of the old set $A\subset\N$ is used.  Consequently
+\[
+        |e|=\frac{|D_A|}{M}\le \frac{\Sig(A)}M<\frac k4.
+\]
+Because $(A,M)$ is carry-good, the old carry $e$ is exactly the old cardinality defect:
+\[
+        T_A=e.
+\]
+The equation then becomes
+\[
+        Y=Q_k q-e.
+\]
+Thus the old carry $e$ plays the role of the local error $u$ in Lemma~\ref{lem:local-carry}.  It remains to verify the size condition on $q$ needed for that lemma.  Since $D=M'q$ is a difference of two subset sums from the positive set $A'\subset\N$, both subset sums lie in the same interval $[0,\Sig(A')]$, and so
+\[
+        |q|\le \frac{\Sig(A')}{M'}.
+\]
+Using disjointness of the union defining $A'$, we compute
+\[
+\frac{\Sig(A')}{M'}
+=
+\frac{\Sig(A)}{M Q_k}+\frac{\Sig(C_k)}{Q_k}
+=
+\frac{\Sig(A)}{M Q_k}+\frac{k^3+k}{2(k^2+k+1)}.
+\]
+The first term is $<k/(4Q_k)$.  The second term is below $k/2$ by
+\[
+        \frac{k}{2}-\frac{k^3+k}{2Q_k}=\frac{k^2}{2Q_k}.
+\]
+Since $k/(4Q_k)<k^2/(2Q_k)$ for $k\ge1$, it follows that
+\[
+        \frac{\Sig(A')}{M'}<\frac k2.
+\]
+This estimate is used twice: in the present closure step it gives $|q|<k/2$, and in the induction it is the quantity compared with the next block length.  Applying Lemma~\ref{lem:local-carry} with $m=k$, $u=e$, and $w=q$ gives
+\[
+        t=q-e.
+\]
+Consequently
+\[
+        T=T_A+t=e+(q-e)=q.
+\]
+Thus $(A',M')$ is carry-good, and the displayed estimate for $\Sig(A')/M'$ has also been proved.
+\end{proof}
+
+\section{The infinite construction and the gap estimate}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Start with the finite prefix
+\[
+        A_0=\{1,2\},
+        \qquad
+        M_1=4,
+        \qquad
+        N_0=|A_0|=2.
+\]
+The set $A_0$ is admissible, and $M_1>\Sig(A_0)=3$, so Remark~\ref{rem:prefix} shows that $(A_0,M_1)$ is carry-good.
+
+Put
+\[
+        \theta=1+\sqrt2,
+        \qquad
+        \tau=2+\sqrt2,
+        \qquad
+        f=3+2\sqrt2.
+\]
+These parameters satisfy
+\[
+        f=\theta+\tau,
+        \qquad
+        \tau=\theta\sqrt2,
+        \qquad
+        \tau+\theta(2-\tau)=0.
+\]
+
+For $j\ge1$, define recursively
+\[
+        k_j=\left\lceil 2(1+N_{j-1})^{\theta}\right\rceil,
+        \qquad
+        B_j=M_j C_{k_j},
+        \qquad
+        A_j=A_{j-1}\cup B_j,
+\]
+\[
+        M_{j+1}=M_j Q_{k_j},
+        \qquad
+        N_j=|A_j|.
+\]
+For orientation, the first new block has $k_1=\lceil 2\cdot3^\theta\rceil$ and begins at $M_1=4$.  No exact numerical value of $k_1$ is needed below, only the displayed ceiling bound and the fixed initial data $A_0=\{1,2\}$, $M_1=4$, and $N_0=2$.
+
+We prove the following induction claim.  At stage $j$, the old set $A_{j-1}$ is controlled modulo $M_j$ and lies below $M_j$, and after adjoining $B_j$ the new set is controlled modulo $M_{j+1}$.  More precisely, for every $j\ge1$, the block $B_j$ is disjoint from $A_{j-1}$,
+\[
+        M_{j+1}\in\N,
+        \qquad
+        A_j\subset[1,M_{j+1})\cap\N,
+        \qquad
+        N_j=N_{j-1}+k_j,
+\]
+$(A_j,M_{j+1})$ is carry-good, and
+\[
+        \frac{\Sig(A_j)}{M_{j+1}}<\frac{k_j}{2}.
+\]
+For $j=1$, $M_2=M_1Q_{k_1}$ is a positive integer, the block is disjoint from $A_0$ because $A_0\subset[1,M_1)$ and $\min B_1=M_1$, and $N_1=N_0+k_1$.  The closure lemma applies to $(A_0,M_1)$ because
+\[
+        \frac{\Sig(A_0)}{M_1}=\frac34<\frac{k_1}{4},
+\]
+and it gives the remaining base-case claims.
+
+Now suppose the claims have been proved through stage $j-1$, with $j\ge2$.  Then $M_{j+1}=M_j Q_{k_j}$ is a positive integer.  Also $k_{j-1}\le N_{j-1}$ because $N_{j-1}=N_0+k_1+\cdots+k_{j-1}$, and
+\[
+        k_j\ge 2(1+N_{j-1})^\theta>2N_{j-1},
+\]
+since $\theta>1$ and $N_{j-1}\ge1$.  Hence the previous stage gives
+\[
+        \frac{\Sig(A_{j-1})}{M_j}<\frac{k_{j-1}}2\le \frac{N_{j-1}}2
+        <\frac{k_j}{4}.
+\]
+This strict final inequality is one role of the factor $2$ in the definition of $k_j$; the same normalization also leaves the geometric contraction constant below strictly smaller than $1$.  The induction hypothesis from stage $j-1$ also gives that $(A_{j-1},M_j)$ is carry-good and that $A_{j-1}\subset[1,M_j)\cap\N$.  Lemma~\ref{lem:closure} applies to $(A_{j-1},M_j)$ with parameter $k_j$.  It gives that $(A_j,M_{j+1})$ is carry-good and that
+\[
+        \frac{\Sig(A_j)}{M_{j+1}}<\frac{k_j}{2}.
+\]
+The same lemma also gives $A_j\subset[1,M_{j+1})\cap\N$.  Since $A_{j-1}\subset[1,M_j)\cap\N$ and the first element of $B_j=M_jC_{k_j}$ is $M_j$, the new block is disjoint from all earlier elements, so $N_j=N_{j-1}+k_j$.  This completes the induction.
+
+Set
+\[
+        A=A_0\sqcup\bigsqcup_{j\ge1}B_j.
+\]
+Each $k_j\ge2$, and each stage adds a new disjoint block, so $A$ is infinite.  The set $A$ is admissible: if finite subsets $U,V\subseteq A$ have the same sum, then $U\cup V\subseteq A_J$ for some $J$, and the finite set $A_J$ is admissible by Proposition~\ref{prop:carry-good-admissible}, since $(A_J,M_{J+1})$ is carry-good.  Therefore $|U|=|V|$.
+
+It remains to estimate the gaps in the increasing enumeration of $A$.  The prefix $A_0=\{1,2\}$ lies below the first block because $\min B_1=M_1=4$.  The induction above shows that adjacent blocks occur in increasing order.  Indeed,
+\[
+        \max B_j=M_j k_j^2<M_j(k_j^2+k_j+1)=M_{j+1}=\min B_{j+1}.
+\]
+By induction over adjacent blocks, every element of $B_i$ is smaller than every element of $B_j$ whenever $i<j$.  Thus the increasing enumeration of $A$ is obtained by listing $1,2$ and then listing the blocks $B_j$ in order.  The elements of $B_j$ occupy positions $N_{j-1}+1,\ldots,N_j$ in this enumeration.  Also $N_j\to\infty$, because $N_j=N_{j-1}+k_j$ and $k_j\ge2$.
+
+For $j\ge1$, define
+\[
+        P_j=\frac{M_j}{N_{j-1}^{\tau}}.
+\]
+This is well-defined because $N_0=2$.  Since $k_j\ge2$, we have
+\[
+        Q_{k_j}=k_j^2+k_j+1\le2k_j^2.
+\]
+Since $N_j\ge k_j$ and $\tau>0$, it follows that
+\[
+        P_{j+1}
+        =\frac{M_{j+1}}{N_j^\tau}
+        \le
+        \frac{2M_j k_j^2}{k_j^\tau}
+        =2M_j k_j^{2-\tau}.
+\]
+Here $2-\tau=-\sqrt2<0$.  Since the exponent is negative, the lower bound $k_j\ge2N_{j-1}^{\theta}$ gives the upper bound
+\[
+        k_j^{2-\tau}\le \bigl(2N_{j-1}^{\theta}\bigr)^{2-\tau}.
+\]
+Therefore, for $j\ge1$,
+\[
+        P_{j+1}
+        \le
+        2M_j\bigl(2N_{j-1}^{\theta}\bigr)^{-\sqrt2}
+        =2^{1-\sqrt2}P_jN_{j-1}^{\tau-\theta\sqrt2}
+        =2^{1-\sqrt2}P_j.
+\]
+Since $P_1$ is finite and $2^{1-\sqrt2}<1$, it follows that $P_j\to0$ geometrically.
+
+Inside the block $B_j$, the elements are
+\[
+        M_j\bigl(1+i(k_j+1)\bigr),
+        \qquad 0\le i<k_j,
+\]
+so each consecutive internal gap is
+\[
+        M_j(k_j+1).
+\]
+The gap between the last element of $B_j$ and the first element of $B_{j+1}$ is
+\[
+        M_{j+1}-M_j k_j^2=M_j(k_j+1).
+\]
+Hence every gap whose left endpoint lies in the $j$th block is exactly $M_j(k_j+1)$.  This includes the edge gap whose left endpoint is the final element of $B_j$, with index $n=N_j$.
+
+For $j\ge1$ we have $N_{j-1}\ge2$, and hence there is an absolute constant $C_0$ such that
+\[
+        k_j+1
+        \le C_0N_{j-1}^{\theta}.
+\]
+Indeed, since $N_{j-1}\ge2$, we have $2\le N_{j-1}^{\theta}$, and
+\[
+        k_j+1
+        \le 2(1+N_{j-1})^\theta+2
+        \le \bigl(2(3/2)^\theta+1\bigr)N_{j-1}^\theta.
+\]
+
+For an index $n$ such that the left endpoint $a_n$ is not in the prefix $A_0$--that is, for $n\ne1,2$--let $j(n)$ be the unique block index such that $a_n\in B_{j(n)}$.  Then $j(n)\to\infty$ as $n\to\infty$, because any finite union of blocks contains only finitely many elements.  If $j=j(n)$, then $N_{j-1}<n\le N_j$ and therefore
+\[
+        \frac{a_{n+1}-a_n}{n^f}
+        =\frac{M_j(k_j+1)}{n^f}
+        \le
+        \frac{M_j(k_j+1)}{N_{j-1}^{\tau+\theta}}
+        \le C_0\frac{M_j}{N_{j-1}^{\tau}}
+        =C_0P_j,
+\]
+since $f=\tau+\theta$.  Equivalently,
+\[
+        \sup_{N_{j-1}<n\le N_j}
+        \frac{a_{n+1}-a_n}{n^f}
+        \le C_0P_j
+        \qquad (j\ge1).
+\]
+Because $P_j\to0$ and $j(n)\to\infty$, we obtain
+\[
+        a_{n+1}-a_n=o(n^f),
+        \qquad
+        f=3+2\sqrt2.
+\]
+
+It remains only to verify the literal inequality $a_{n+1}-a_n\le n^f$ for the two prefix gaps and then uniformly for all block gaps.  The gaps with left-endpoint indices $n=1,2$ satisfy
+\[
+        a_2-a_1=1\le 1^f,
+        \qquad
+        a_3-a_2=2\le 2^f,
+\]
+because $a_1=1$, $a_2=2$, and $a_3=\min B_1=M_1=4$.
+For block gaps, put
+\[
+        R_j=\frac{M_j(k_j+1)}{(N_{j-1}+1)^f}\qquad(j\ge1).
+\]
+The first value is below $1$ without using the exact numerical value of $k_1$.  Since $\lceil x\rceil+1\le x+2$ gives
+\[
+        k_1+1\le 2\cdot3^{\theta}+2,
+\]
+we have
+\[
+        R_1
+        \le \frac{4(2\cdot3^{\theta}+2)}{3^f}
+        =\frac{8}{3^\tau}+\frac{8}{3^f}
+        <\frac{8}{27}+\frac{8}{243}<1,
+\]
+because $\tau>3$ and $f>5$.  We claim that $(R_j)$ is strictly decreasing.  Since
+\[
+        \frac{R_{j+1}}{R_j}
+        =Q_{k_j}\frac{k_{j+1}+1}{k_j+1}
+        \left(\frac{N_{j-1}+1}{N_j+1}\right)^f,
+\]
+and since
+\[
+        Q_{k_j}<(k_j+1)^2,
+\]
+while
+\[
+        k_{j+1}+1
+        \le 2(N_j+1)^\theta+2
+        \le 3(N_j+1)^\theta,
+\]
+where the last inequality uses $(N_j+1)^\theta\ge2$.  Also
+\[
+        k_j+1\ge k_j\ge2(N_{j-1}+1)^\theta.
+\]
+Combining these inequalities gives
+\[
+        \frac{R_{j+1}}{R_j}
+        \le
+        \frac32 (k_j+1)^2
+        \frac{(N_{j-1}+1)^\tau}{(N_j+1)^\tau}.
+\]
+Here we used $f=\theta+\tau$.  Also $k_j+1\le N_j+1$, since $N_j=N_{j-1}+k_j$ and $N_{j-1}\ge0$, while $N_j+1\ge k_j\ge2(N_{j-1}+1)^\theta$.  Since $2-\tau=-\sqrt2<0$, raising this last lower bound to the power $2-\tau$ reverses the inequality, and it follows that
+\[
+        \frac{R_{j+1}}{R_j}
+        \le
+        \frac32 (N_j+1)^{2-\tau}(N_{j-1}+1)^\tau
+        \le
+        \frac32\,2^{-\sqrt2}(N_{j-1}+1)^{\tau-\theta\sqrt2}
+        =\frac32\,2^{-\sqrt2}<1,
+\]
+since $\sqrt2>1$ implies $2^{-\sqrt2}<1/2$.
+Thus $R_j<1$ for every $j\ge1$.  If the left endpoint of a block gap has index $n$, then $n\ge N_{j-1}+1$, and hence
+\[
+        a_{n+1}-a_n=M_j(k_j+1)\le R_j n^f<n^f.
+\]
+Together with the two prefix gaps, this proves $a_{n+1}-a_n\le n^f$ for every $n\ge1$.
+\end{proof}
+
+\begin{remark}[Choice of parameters]\label{rem:parameters}
+The following heuristic explains the parameter choice in the present $P_j$-decay scheme; it is not an optimality claim for Problem~\#875 or for carry-block methods in general.  If one chooses block lengths of size $k_j\asymp N_{j-1}^{\theta}$ and tries to prove $M_j=o(N_{j-1}^{\tau})$ using the recurrence above, then this particular $P_j$-decay argument requires
+\[
+        \tau+\theta(2-\tau)\le0,
+        \qquad \tau>2.
+\]
+Thus $\theta\ge \tau/(\tau-2)$, and minimizing $\theta+\tau$ gives $\tau=2+\sqrt2$ and $\theta=1+\sqrt2$.  For the concrete normalization used above, including the coefficient $2$ in the definition of $k_j$, the remaining constant is $2^{1-\sqrt2}<1$, so equality in the exponent condition still gives geometric decay.
+\end{remark}
+
+\begin{corollary}\label{cor:growth}
+The set constructed in Theorem~\ref{thm:main} satisfies the following simple consequence of the gap estimate.  This corollary records only what follows immediately by summing the little-$o$ gap bound; no separate analysis of the block counting function is used:
+\[
+        a_n=o\bigl(n^{4+2\sqrt2}\bigr),
+        \qquad
+        |A\cap[1,x]|=\omega\bigl(x^{1/(4+2\sqrt2)}\bigr).
+\]
+\end{corollary}
+
+\begin{proof}
+Let $f=3+2\sqrt2$.  From the theorem,
+\[
+        a_{r+1}-a_r=o(r^f).
+\]
+We show that summing preserves the little-$o$ estimate.  Given $\varepsilon>0$, choose an integer $R\ge1$ such that
+\[
+        a_{r+1}-a_r\le \varepsilon r^f
+\]
+for all $r\ge R$.  Then, for $n>R$,
+\[
+        a_n
+        =a_R+\sum_{r=R}^{n-1}(a_{r+1}-a_r)
+        \le
+        a_R+\varepsilon\sum_{r=R}^{n-1}r^f
+        \le
+        a_R+C_f\varepsilon n^{f+1},
+\]
+where $C_f$ depends only on $f$.  Dividing by $n^{f+1}$ and taking the limsup gives
+\[
+        \limsup_{n\to\infty}\frac{a_n}{n^{f+1}}\le C_f\varepsilon.
+\]
+Since $\varepsilon$ is arbitrary,
+\[
+        a_n=o(n^{f+1})=o\bigl(n^{4+2\sqrt2}\bigr).
+\]
+
+Put $\alpha=1/(f+1)=1/(4+2\sqrt2)$.  To prove the counting estimate, fix any constant $L>0$ and set $n=\lfloor Lx^\alpha\rfloor$.  For all sufficiently large $x$, this integer satisfies $n\ge1$; moreover, once $Lx^\alpha\ge2$, it satisfies $n\ge (L/2)x^\alpha$.  As $x\to\infty$, we have $n\to\infty$ and
+\[
+        \frac{a_n}{x}
+        =
+        \frac{a_n}{n^{f+1}}\cdot\frac{n^{f+1}}{x}
+        \longrightarrow 0,
+\]
+because $n^{f+1}/x$ remains bounded for fixed $L$.  Hence $a_n\le x$ for all sufficiently large $x$, and therefore
+\[
+        |A\cap[1,x]|\ge n\ge \frac L2 x^\alpha
+\]
+for all sufficiently large $x$.  Since $L$ was arbitrary, $|A\cap[1,x]|=\omega(x^\alpha)$.
+\end{proof}
+
+\begin{remark}[Counting-function caution]\label{rem:counting-caution}
+Corollary~\ref{cor:growth} is derived only by summing the proven little-$o$ gap estimate.  The block structure should not be read as giving a substantially larger uniform power counting exponent without an additional argument.  For example, the first internal gap in $B_j$ already has length $M_j(k_j+1)$, and initial portions of a new block have only $O(N_{j-1})$ total available elements below scales of order $M_jN_{j-1}k_j$.  Since $N_j$ grows very rapidly whereas the normalizing factor $P_j=M_j/N_{j-1}^{\tau}$ decays only geometrically in the proof above, a sharper counting theorem would require a separate analysis or a different block structure.
+\end{remark}
+
+\begin{remark}[Possible improvements]\label{rem:improvements}
+The local block $C_k$ has size $k$ and maximum $k^2$.  It is therefore not finite-cardinality optimal in the constant-factor sense, since finite admissible subsets of $[1,N]$ can have about $2\sqrt N$ elements.  Within the present block-carry scheme, finite-cardinality optimality alone would not be enough to improve the exponent.  A replacement block in this strategy would also need a compatible carry lemma, a controlled first element, a controlled maximum, small internal consecutive gaps, and a small edge gap between the maximum of the block and the next modulus.  In the present block $C_k$, this edge gap is
+\[
+        Q_k-\max C_k=k+1,
+\]
+which exactly matches the internal spacing.  Thus improving the exponent by this route would require more than substituting an arbitrary finite extremal admissible set; it appears to require a more radical carry-compatible local structure.
+\end{remark}
+
+\section*{Code and formalization}
+
+A companion Lean~4/mathlib formalization of the main theorem is to be posted at
+\url{https://github.com/lechmazur/erdos_875/}.  The intended public repository follows the same division of roles as the related Erd\H{o}s formalization repositories: the machine-checked Lean development is the trusted statement/proof artifact, and the present document supplies notation, motivation, historical context, and a human-readable proof.  The LaTeX proof above is written to keep the main invariants close to their formal counterparts: graded differences, the local carry lemma, carry-good closure, the recursive block construction, and the final gap estimate.
+
+\medskip
+\noindent\textit{Authorship, Lean proof, and verification disclosure.}
+GPT-5.5 Pro is listed as first author because it produced nearly all of the mathematical derivation, proof structuring, and LaTeX drafting through prompted interaction.  Lech Mazur prompted, selected, audited, edited, curated, and is responsible for the public posting of this draft.  The mathematical claims should be checked against the Lean artifact once the repository is public.  This public draft has not been independently refereed, and neither the Lean proof nor the other checks should be regarded as journal peer review.  The literature/contextual claims should be read with the usual caveat that the cited Erd\H{o}s Problems pages are catalogues rather than complete literature reviews.
+
+\begin{thebibliography}{10}
+
+\bibitem{Erdos1962}
+P. Erd\H{o}s,
+\emph{Sz\'amelm\'eleti megjegyz\'esek, III.\ N\'eh\'any addit\'iv sz\'amelm\'eleti probl\'em\'ar\'ol},
+Matematikai Lapok \textbf{13} (1962), 28--38.
+
+\bibitem{Erdos1998}
+P. Erd\H{o}s,
+\emph{Some of my new and almost new problems and results in combinatorial number theory},
+in \emph{Number Theory: Diophantine, Computational and Algebraic Aspects},
+Proceedings of the International Conference held in Eger, Hungary, July 29--August 2, 1996,
+edited by K. Gy\H{o}ry, A. Peth\H{o}, and V. T. S\'os,
+De Gruyter, Berlin/New York, 1998, pp. 169--180.
+DOI: \href{https://doi.org/10.1515/9783110809794.169}{10.1515/9783110809794.169}.
+
+\bibitem{Straus1966}
+E. G. Straus,
+\emph{On a problem in combinatorial number theory},
+Journal of Mathematical Sciences \textbf{1} (1966), 77--80.
+
+\bibitem{ENS1991}
+P. Erd\H{o}s, J.-L. Nicolas, and A. S\'ark\"ozy,
+\emph{Sommes de sous-ensembles},
+Journal de th\'eorie des nombres de Bordeaux \textbf{3} (1991), no. 1, 55--72.
+The infinite construction quoted here is Theorem~2.
+DOI: \href{https://doi.org/10.5802/jtnb.42}{10.5802/jtnb.42}.
+
+\bibitem{DF1}
+J.-M. Deshouillers and G. A. Freiman,
+\emph{On an additive problem of Erd\H{o}s and Straus, 1},
+Israel Journal of Mathematics \textbf{92} (1995), no. 1--3, 33--43.
+DOI: \href{https://doi.org/10.1007/BF02762069}{10.1007/BF02762069}.
+
+\bibitem{DF2}
+J.-M. Deshouillers and G. A. Freiman,
+\emph{On an additive problem of Erd\H{o}s and Straus, 2},
+in \emph{Structure theory of set addition}, Ast\'erisque no. \textbf{258} (1999), 141--148.
+DOI: \href{https://doi.org/10.24033/ast.442}{10.24033/ast.442}.
+Available at \url{https://www.numdam.org/item/AST_1999__258__141_0/}.
+
+\bibitem{Nicolas1999}
+J.-L. Nicolas,
+\emph{Stratified sets},
+in \emph{Structure theory of set addition}, Ast\'erisque no. \textbf{258} (1999), 205--215.
+Available at \url{https://www.numdam.org/item/AST_1999__258__205_0/}.
+
+\bibitem{Bloom874}
+T. F. Bloom,
+\emph{Erd\H{o}s Problem \#874},
+\url{https://www.erdosproblems.com/874}, accessed May 7, 2026.
+
+\bibitem{Bloom875}
+T. F. Bloom,
+\emph{Erd\H{o}s Problem \#875},
+\url{https://www.erdosproblems.com/875}, accessed May 7, 2026.
+
+\end{thebibliography}
+
+\end{document}
