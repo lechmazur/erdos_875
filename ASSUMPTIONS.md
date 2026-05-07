@@ -16,13 +16,14 @@ The proof library does not introduce project axioms, `unsafe` definitions,
 
 ## Statement/Proof Split
 
-`Challenge.lean` is the trusted statement file for comparator. It intentionally
-contains `sorry` proofs for the theorem statements being checked.
+`Challenge.lean` is the trusted statement file for comparator. It imports only
+the source vocabulary modules needed to state the public endpoint and
+intentionally contains a `sorry` proof for the theorem being checked.
 
 `Solution.lean` imports the proved `AdmissibleCarry` library. Comparator checks
-that the declarations imported by `Solution.lean` have the same theorem
-statements as `Challenge.lean`, use only the permitted axioms above, and are
-accepted by the Lean kernel.
+that the theorem proved in `Solution.lean` has the same statement as
+`Challenge.lean`, uses only the permitted axioms above, and is accepted by the
+Lean kernel.
 
 The no-placeholder audit excludes `Challenge.lean` by design and checks the
 proof library.

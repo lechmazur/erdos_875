@@ -20,11 +20,14 @@ Comparator config:
   comparator.json
 
 Comparator targets:
-  AdmissibleCarry.finalSet_infinite
-  AdmissibleCarry.finalSet_admissible
-  AdmissibleCarry.final_gap_tendsto
-  AdmissibleCarry.final_gap_eventually_le_rpow
-  AdmissibleCarry.final_construction
+  AdmissibleCarry.published_final_construction
+
+Comparator audit:
+  Run date 2026-05-07
+  Result: Lean default kernel accepts the solution; comparator reported "Your solution is okay!"
+  comparator v4.30.0-rc2, commit 95e46e658f5955ba1b01596d4ac668630476008c
+  lean4export v4.30.0-rc2, commit 12581a6b680d8478175596338eb2d53383a323e3
+  landrun v0.1.15
 
 Reference notes:
   docs/reference/admissible_carry_note_lean_formalization_v10.tex

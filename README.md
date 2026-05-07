@@ -15,18 +15,14 @@ and the resulting eventual real gap bound.
 
 ## Trusted Statement
 
-Read [`Challenge.lean`](Challenge.lean) first. It imports only `Mathlib`,
-defines the public vocabulary used in the theorem statements, and contains the
-comparator targets:
+Read [`Challenge.lean`](Challenge.lean) first. It imports the source vocabulary
+modules used in the public theorem statement and contains the comparator
+target:
 
-- `AdmissibleCarry.finalSet_infinite`
-- `AdmissibleCarry.finalSet_admissible`
-- `AdmissibleCarry.final_gap_tendsto`
-- `AdmissibleCarry.final_gap_eventually_le_rpow`
-- `AdmissibleCarry.final_construction`
+- `AdmissibleCarry.published_final_construction`
 
 [`Solution.lean`](Solution.lean) imports the proved `AdmissibleCarry` library
-for comparison against the challenge statements.
+and proves this public target from the final checked endpoint declarations.
 
 ## Proof Layout
 
@@ -77,7 +73,7 @@ lake env comparator comparator.json
 
 This requires `landrun`, `lean4export`, and `comparator` on `PATH`, with
 versions compatible with Lean `v4.30.0-rc2`. See [`AUDIT.md`](AUDIT.md) for the
-audit workflow.
+successful comparator audit and tool versions used for this bundle.
 
 Audit metadata:
 

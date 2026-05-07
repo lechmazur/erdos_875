@@ -2,11 +2,7 @@
   "challenge_module": "Challenge",
   "solution_module": "Solution",
   "theorem_names": [
-    "AdmissibleCarry.finalSet_infinite",
-    "AdmissibleCarry.finalSet_admissible",
-    "AdmissibleCarry.final_gap_tendsto",
-    "AdmissibleCarry.final_gap_eventually_le_rpow",
-    "AdmissibleCarry.final_construction"
+    "AdmissibleCarry.published_final_construction"
   ],
   "permitted_axioms": [
     "propext",

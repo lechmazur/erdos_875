@@ -5,8 +5,8 @@ published bundle.
 
 | Content | Lean declaration | File | Status |
 | --- | --- | --- | --- |
-| Trusted comparator statements | same five names below | `Challenge.lean` | Statement-only, intentionally uses `sorry` |
-| Comparator solution module | imports proof library | `Solution.lean` | Checked by comparator when comparator is installed |
+| Trusted comparator statement | `AdmissibleCarry.published_final_construction` | `Challenge.lean` | Statement-only, intentionally uses `sorry` |
+| Comparator solution module | `AdmissibleCarry.published_final_construction` | `Solution.lean` | Proved from the checked proof library and accepted by comparator |
 | Paper-admissible finite-subset wrapper | `AdmissibleCarry.PaperAdmSet` | `AdmissibleCarry/CoeffDiff.lean` | Defined |
 | Abstract legal schedule | `AdmissibleCarry.LegalSchedule` | `AdmissibleCarry/Stage.lean` | Defined |
 | Sequence-level admissibility | `AdmissibleCarry.LegalSchedule.admSeq` | `AdmissibleCarry/Enumeration.lean` | Proved |
@@ -17,17 +17,14 @@ published bundle.
 | Concrete normalized gap limit | `AdmissibleCarry.final_gap_tendsto` | `AdmissibleCarry/ConcreteCeil.lean` | Proved |
 | Eventual real gap bound | `AdmissibleCarry.final_gap_eventually_le_rpow` | `AdmissibleCarry/ConcreteCeil.lean` | Proved |
 | Bundled final endpoint | `AdmissibleCarry.final_construction` | `AdmissibleCarry/ConcreteCeil.lean` | Proved |
+| Published comparator endpoint | `AdmissibleCarry.published_final_construction` | `Solution.lean` | Proved from final endpoint declarations |
 
 ## Comparator Targets
 
-The five declarations listed in `comparator.json` are:
+The declaration listed in `comparator.json` is:
 
 ```text
-AdmissibleCarry.finalSet_infinite
-AdmissibleCarry.finalSet_admissible
-AdmissibleCarry.final_gap_tendsto
-AdmissibleCarry.final_gap_eventually_le_rpow
-AdmissibleCarry.final_construction
+AdmissibleCarry.published_final_construction
 ```
 
 ## Scope Notes

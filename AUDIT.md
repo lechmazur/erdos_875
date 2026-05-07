@@ -1,18 +1,14 @@
 # Auditing This Lean Proof
 
-The trusted statement is [`Challenge.lean`](Challenge.lean). It imports only
-`Mathlib`, defines the public vocabulary used in the theorem statements, and
-states the five comparator targets:
+The trusted statement is [`Challenge.lean`](Challenge.lean). It imports the
+source vocabulary modules that define `PaperAdmSet` and
+`LegalSchedule.gapExponent`, then states the public comparator target:
 
-- `AdmissibleCarry.finalSet_infinite`
-- `AdmissibleCarry.finalSet_admissible`
-- `AdmissibleCarry.final_gap_tendsto`
-- `AdmissibleCarry.final_gap_eventually_le_rpow`
-- `AdmissibleCarry.final_construction`
+- `AdmissibleCarry.published_final_construction`
 
 The proof is the `AdmissibleCarry` library. [`Solution.lean`](Solution.lean)
-imports that library so comparator can verify that the proved declarations
-match the trusted statements in `Challenge.lean`.
+imports that library and proves the public target from the checked concrete
+endpoint declarations.
 
 ## Standard Lean Check
 
@@ -80,10 +76,21 @@ Then run from the repository root:
 lake env comparator comparator.json
 ```
 
-The comparator configuration is included in this bundle. Comparator binaries
-were not available in the local environment used to create this publication
-bundle, so the recorded local audit is the source Lean build, the direct Lean
-wrapper checks, and the no-placeholder/import audits above.
+This bundle was audited on 2026-05-07 with locally installed comparator tools:
+
+```text
+comparator v4.30.0-rc2, commit 95e46e658f5955ba1b01596d4ac668630476008c
+lean4export v4.30.0-rc2, commit 12581a6b680d8478175596338eb2d53383a323e3
+landrun v0.1.15
+```
+
+The successful comparator run ended with:
+
+```text
+Running Lean default kernel on solution.
+Lean default kernel accepts the solution
+Your solution is okay!
+```
 
 See also:
 
