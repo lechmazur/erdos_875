@@ -1,0 +1,34 @@
+Erdos 875 Lean proof bundle
+Checked date: 2026-05-07
+
+Lean toolchain:
+  leanprover/lean4:v4.30.0-rc2
+  Lean commit 3dc1a088b6d2d8eafe25a7cd7ec7b58d731bd7cc
+  Lake version 5.0.0-src+3dc1a08
+
+Pinned dependencies:
+  mathlib rev 5450b53e5ddc75d46418fabb605edbf36bd0beb6
+  See lake-manifest.json for inherited dependency revisions.
+
+Source repository commit used for this bundle:
+  1df39297a6b3a12841f8b63f186b8456f2c1effa
+
+Top-level checked proof module:
+  AdmissibleCarry
+
+Comparator config:
+  comparator.json
+
+Comparator targets:
+  AdmissibleCarry.finalSet_infinite
+  AdmissibleCarry.finalSet_admissible
+  AdmissibleCarry.final_gap_tendsto
+  AdmissibleCarry.final_gap_eventually_le_rpow
+  AdmissibleCarry.final_construction
+
+Reference notes:
+  docs/reference/admissible_carry_note_lean_formalization_v10.tex
+  docs/reference/admissible_carry_note_erdos875_new_version.tex
+
+Exact published repository identity:
+  Use `git rev-parse HEAD` in this published bundle.

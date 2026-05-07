@@ -1,0 +1,9 @@
+.lake/
+.DS_Store
+*.olean
+*.ilean
+*.c
+*.o
+*.so
+/.env
+*:Zone.Identifier
