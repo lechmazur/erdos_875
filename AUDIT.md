@@ -46,11 +46,6 @@ scripts/audit_imports.sh .
 
 The no-placeholder and import audit commands completed successfully.
 
-For this 2026-05-09 refresh, this local machine did not have `comparator`,
-`lean4export`, or `landrun` on `PATH`.  The comparator target remains set up in
-`comparator.json`; run `lake env comparator comparator.json` on a machine with
-those binaries installed before calling this refresh comparator-audited.
-
 ## Comparator Check
 
 Comparator is an external Lean proof checker harness. It compares a trusted
@@ -68,8 +63,8 @@ Then run from the repository root:
 lake env comparator comparator.json
 ```
 
-The previous eventual-bound bundle was audited on 2026-05-07 with locally
-installed comparator tools:
+This all-index refresh was audited on 2026-05-09 using the local tool bundle
+`/tmp/erdos875-comparator-tools/bin`:
 
 ```text
 comparator v4.30.0-rc2, commit 95e46e658f5955ba1b01596d4ac668630476008c
@@ -77,7 +72,7 @@ lean4export v4.30.0-rc2, commit 12581a6b680d8478175596338eb2d53383a323e3
 landrun v0.1.15
 ```
 
-That successful comparator run ended with:
+The successful comparator run ended with:
 
 ```text
 Running Lean default kernel on solution.

@@ -83,7 +83,7 @@ lake env comparator comparator.json
 
 This requires `landrun`, `lean4export`, and `comparator` on `PATH`, with
 versions compatible with Lean `v4.30.0-rc2`. See [`AUDIT.md`](AUDIT.md) for the
-current audit status and comparator workflow.
+successful comparator audit and tool versions used for this bundle.
 
 Audit metadata:
 
