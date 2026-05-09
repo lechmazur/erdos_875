@@ -42,6 +42,9 @@ Durable discoveries go here. Do not paste raw search dumps.
 - `Filter.Tendsto.const_mul`, composition of `Tendsto`, and
   `Filter.Tendsto.eventually_le_const` convert block-owner decay into the final
   little-oh theorem and eventual power-bound corollary.
+- `Filter.tendsto_add_atTop_iff_nat 2` converts the shifted prefixed limit
+  `(fun m => prefGapRatio (m + 2)) → 0` back to the full zero-indexed
+  prefixed sequence.
 
 ## Integer Absolute Values
 
@@ -78,6 +81,16 @@ Durable discoveries go here. Do not paste raw search dumps.
 - `Finset.preimage`, `Finset.sum_preimage`, and `Finset.card_preimage`
   convert finite subsets of `Set.range seq` back to finite index sets for the
   paper-set wrapper.
+
+## Prefixed Pointwise Bound
+
+- `Real.rpow_lt_rpow_of_exponent_lt` proves `2 ^ theta > 3` and
+  `3 ^ tau > 27`.
+- `Real.mul_rpow`, `Real.rpow_mul`, and `Real.rpow_add` normalize the direct
+  contraction estimate for `prefR`.
+- `div_lt_one`, `div_le_div_of_nonneg_left`, and
+  `div_le_div_of_nonneg_right` are the useful division forms for turning
+  `prefR j < 1` into a pointwise gap bound.
 
 ## Closure
 

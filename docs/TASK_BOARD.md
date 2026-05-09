@@ -2,8 +2,10 @@
 
 ## Current
 
-- M8: complete. `final_analysis_ready`, `final_gap_tendsto`, the eventual
-  gap-bound corollary, and `final_construction` are proved.
+- M9: complete. The shifted prefixed construction is proved through
+  `Prefixed.pref_final_construction`, including `pref_gap_tendsto` and the
+  all-index `pref_all_gap_bound`. Root `Challenge.lean` and `Solution.lean`
+  compile with the strengthened public theorem.
 
 ## Next
 

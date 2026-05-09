@@ -2,12 +2,13 @@
 
 The trusted statement is [`Challenge.lean`](Challenge.lean). It imports only
 `Mathlib` and states the public comparator target directly, with the
-paper-admissibility condition and exponent written inline:
+paper-admissibility condition, exponent, normalized gap limit, and pointwise
+all-index gap bound written inline:
 
 - `AdmissibleCarry.published_final_construction`
 
 The proof is the `AdmissibleCarry` library. [`Solution.lean`](Solution.lean)
-imports that library and proves the public target from the checked concrete
+imports that library and proves the public target from the checked prefixed
 endpoint declarations.
 
 ## Standard Lean Check
@@ -23,13 +24,15 @@ scripts/audit_imports.sh .
 The no-sorry check is therefore scoped to the proof library, not the trusted
 challenge file.
 
-The source proof copied into this published bundle was validated in
-`/home/lech/erdos_875` with:
+The prefixed source proof copied into this published bundle was validated in
+`/home/lech/erdos_875` at source commit `340ac57` with:
 
 ```text
 lake build AdmissibleCarry
 scripts/audit_sorries.sh .
 scripts/audit_imports.sh .
+lake env lean Challenge.lean
+lake env lean Solution.lean
 ```
 
 The published bundle itself was then validated with:
@@ -42,6 +45,11 @@ scripts/audit_imports.sh .
 ```
 
 The no-placeholder and import audit commands completed successfully.
+
+For this 2026-05-09 refresh, this local machine did not have `comparator`,
+`lean4export`, or `landrun` on `PATH`.  The comparator target remains set up in
+`comparator.json`; run `lake env comparator comparator.json` on a machine with
+those binaries installed before calling this refresh comparator-audited.
 
 ## Comparator Check
 
@@ -60,7 +68,8 @@ Then run from the repository root:
 lake env comparator comparator.json
 ```
 
-This bundle was audited on 2026-05-07 with locally installed comparator tools:
+The previous eventual-bound bundle was audited on 2026-05-07 with locally
+installed comparator tools:
 
 ```text
 comparator v4.30.0-rc2, commit 95e46e658f5955ba1b01596d4ac668630476008c
@@ -68,7 +77,7 @@ lean4export v4.30.0-rc2, commit 12581a6b680d8478175596338eb2d53383a323e3
 landrun v0.1.15
 ```
 
-The successful comparator run ended with:
+That successful comparator run ended with:
 
 ```text
 Running Lean default kernel on solution.

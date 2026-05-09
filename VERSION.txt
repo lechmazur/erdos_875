@@ -1,5 +1,5 @@
 Erdos 875 Lean proof bundle
-Checked date: 2026-05-07
+Checked date: 2026-05-09
 
 Lean toolchain:
   leanprover/lean4:v4.30.0-rc2
@@ -11,7 +11,7 @@ Pinned dependencies:
   See lake-manifest.json for inherited dependency revisions.
 
 Source repository commit used for this bundle:
-  1df39297a6b3a12841f8b63f186b8456f2c1effa
+  340ac57 Add prefixed all-index endpoint
 
 Top-level checked proof module:
   AdmissibleCarry
@@ -23,11 +23,15 @@ Comparator targets:
   AdmissibleCarry.published_final_construction
 
 Comparator audit:
-  Run date 2026-05-07
-  Result: Lean default kernel accepts the solution; comparator reported "Your solution is okay!"
-  comparator v4.30.0-rc2, commit 95e46e658f5955ba1b01596d4ac668630476008c
-  lean4export v4.30.0-rc2, commit 12581a6b680d8478175596338eb2d53383a323e3
-  landrun v0.1.15
+  Previous run date 2026-05-07 for the earlier eventual-bound bundle:
+    Lean default kernel accepted the solution; comparator reported "Your solution is okay!"
+    comparator v4.30.0-rc2, commit 95e46e658f5955ba1b01596d4ac668630476008c
+    lean4export v4.30.0-rc2, commit 12581a6b680d8478175596338eb2d53383a323e3
+    landrun v0.1.15
+  2026-05-09 refresh:
+    Comparator binaries were not present on PATH in this environment.
+    Run `lake env comparator comparator.json` with compatible comparator tools
+    before marking this refreshed bundle comparator-audited.
 
 Reference notes:
   docs/reference/admissible_carry_note_erdos875.pdf

@@ -12,12 +12,13 @@ normalized consecutive-gap limit:
   <img src="docs/assets/readme-normalized-gap-limit-dark.png#gh-dark-mode-only" alt="The normalized consecutive-gap quotient tends to zero." width="420">
 </p>
 
-and the resulting eventual real gap bound:
+and the pointwise all-index real gap bound
 
-<p>
-  <img src="docs/assets/readme-eventual-gap-bound-light.png#gh-light-mode-only" alt="The eventual real gap bound." width="680">
-  <img src="docs/assets/readme-eventual-gap-bound-dark.png#gh-dark-mode-only" alt="The eventual real gap bound." width="680">
-</p>
+```lean
+∀ n : Nat,
+  ((a (n + 1) - a n : Nat) : ℝ) ≤
+    ((n + 1 : Nat) : ℝ) ^ (3 + 2 * Real.sqrt 2)
+```
 
 ## Trusted Statement
 
@@ -31,8 +32,8 @@ and proves this public target from the final checked endpoint declarations.
 
 ## Proof Layout
 
-The proof is organized as a finite/combinatorial core followed by an asymptotic
-wrapper:
+The proof is organized as a finite/combinatorial core, the original eventual
+concrete schedule, and a prefixed all-index endpoint:
 
 - [`AdmissibleCarry/Signs.lean`](AdmissibleCarry/Signs.lean)
 - [`AdmissibleCarry/CoeffDiff.lean`](AdmissibleCarry/CoeffDiff.lean)
@@ -43,8 +44,15 @@ wrapper:
 - [`AdmissibleCarry/Enumeration.lean`](AdmissibleCarry/Enumeration.lean)
 - [`AdmissibleCarry/AsymptoticAbstract.lean`](AdmissibleCarry/AsymptoticAbstract.lean)
 - [`AdmissibleCarry/ConcreteCeil.lean`](AdmissibleCarry/ConcreteCeil.lean)
+- [`AdmissibleCarry/PrefixedTail.lean`](AdmissibleCarry/PrefixedTail.lean)
+- [`AdmissibleCarry/PrefixedStage.lean`](AdmissibleCarry/PrefixedStage.lean)
+- [`AdmissibleCarry/PrefixedSeq.lean`](AdmissibleCarry/PrefixedSeq.lean)
+- [`AdmissibleCarry/PrefixedAsymptotic.lean`](AdmissibleCarry/PrefixedAsymptotic.lean)
+- [`AdmissibleCarry/PrefixedPointwise.lean`](AdmissibleCarry/PrefixedPointwise.lean)
+- [`AdmissibleCarry/PrefixedFinal.lean`](AdmissibleCarry/PrefixedFinal.lean)
 
-The final endpoint is [`AdmissibleCarry.final_construction`](AdmissibleCarry/ConcreteCeil.lean).
+The final all-index endpoint is
+[`AdmissibleCarry.Prefixed.pref_final_construction`](AdmissibleCarry/PrefixedFinal.lean).
 
 ## Checking
 
@@ -76,7 +84,7 @@ lake env comparator comparator.json
 
 This requires `landrun`, `lean4export`, and `comparator` on `PATH`, with
 versions compatible with Lean `v4.30.0-rc2`. See [`AUDIT.md`](AUDIT.md) for the
-successful comparator audit and tool versions used for this bundle.
+current audit status and comparator workflow.
 
 Audit metadata:
 
@@ -96,4 +104,5 @@ The reference note is explanatory source material, not a trusted proof artifact:
 ## Notes
 
 Generative AI tools assisted with development and drafting. The proof artifact
-is the Lean code checked by Lake and, for statement matching, comparator.
+is the Lean code checked by Lake, with `comparator.json` providing the
+statement-matching harness when comparator tooling is installed.

@@ -19,7 +19,7 @@ Public bundled endpoint.
 
 There is an infinite paper-admissible set `A` with a strict increasing
 enumeration `a`; its consecutive gaps satisfy the normalized limit and the
-eventual real gap bound with exponent `3 + 2 * sqrt 2`.
+pointwise real gap bound with exponent `3 + 2 * sqrt 2`.
 -/
 theorem published_final_construction :
     ∃ A : Set Nat,
@@ -34,9 +34,9 @@ theorem published_final_construction :
             ((a (n + 1) - a n : Nat) : ℝ) /
               ((n + 1 : Nat) : ℝ) ^ (3 + 2 * Real.sqrt 2))
           Filter.atTop (nhds 0) ∧
-        ∀ᶠ n : Nat in Filter.atTop,
+        (∀ n : Nat,
           ((a (n + 1) - a n : Nat) : ℝ) ≤
-            ((n + 1 : Nat) : ℝ) ^ (3 + 2 * Real.sqrt 2) := by
+            ((n + 1 : Nat) : ℝ) ^ (3 + 2 * Real.sqrt 2)) := by
   sorry
 
 end AdmissibleCarry

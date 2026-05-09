@@ -4,7 +4,7 @@ import AdmissibleCarry
 `Solution` is the module named in `comparator.json`.
 
 The public theorem checked by comparator is proved from the concrete
-`AdmissibleCarry.final_construction` endpoint.
+`AdmissibleCarry.Prefixed.pref_final_construction` endpoint.
 -/
 
 noncomputable section
@@ -26,13 +26,15 @@ theorem published_final_construction :
             ((a (n + 1) - a n : Nat) : ℝ) /
               ((n + 1 : Nat) : ℝ) ^ (3 + 2 * Real.sqrt 2))
           Filter.atTop (nhds 0) ∧
-        ∀ᶠ n : Nat in Filter.atTop,
+        (∀ n : Nat,
           ((a (n + 1) - a n : Nat) : ℝ) ≤
-            ((n + 1 : Nat) : ℝ) ^ (3 + 2 * Real.sqrt 2) := by
-  refine ⟨finalSet, finalSet_infinite, finalSet_admissible, concreteSchedule.seq, ?_, ?_, ?_, ?_⟩
+            ((n + 1 : Nat) : ℝ) ^ (3 + 2 * Real.sqrt 2)) := by
+  refine
+    ⟨Prefixed.prefFinalSet, Prefixed.prefFinalSet_infinite,
+      Prefixed.prefFinalSet_admissible, Prefixed.prefSeq, ?_, ?_, ?_, ?_⟩
   · rfl
-  · exact concreteSchedule.strictMono_seq
-  · simpa [LegalSchedule.gapExponent] using final_gap_tendsto
-  · simpa [LegalSchedule.gapExponent] using final_gap_eventually_le_rpow
+  · exact Prefixed.prefSeq_strictMono
+  · simpa [LegalSchedule.gapExponent] using Prefixed.pref_gap_tendsto
+  · simpa [LegalSchedule.gapExponent] using Prefixed.pref_all_gap_bound
 
 end AdmissibleCarry

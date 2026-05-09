@@ -207,6 +207,64 @@ injective concrete sequence, apply `admSeq`, and push cardinals back.
 Validation command: `lake build AdmissibleCarry.ConcreteCeil`.
 Status: proved.
 
+## `Prefixed.pref_all_gap_bound`
+
+Lemma name: `AdmissibleCarry.Prefixed.pref_all_gap_bound`
+Source location: published prefixed endpoint.
+Purpose: pointwise all-index power bound for the prefixed enumeration.
+Variables: none.
+Hypotheses: none.
+Lean-ish statement:
+`∀ n, ((prefSeq (n+1) - prefSeq n : Nat) : ℝ) ≤ (n+1)^gapExponent`.
+Dependencies: `prefR_zero_lt_one`, `prefR_succ_le_const_mul`,
+`prefR_lt_one`, `pref_tail_gap`.
+Expected mathlib APIs: `Real.rpow_add`, `Real.mul_rpow`,
+`div_lt_one`, `div_le_div_of_nonneg_left`.
+Coercion/domain hazards: converting `prefR j < 1` back to a Nat gap cast.
+Proof strategy: handle the two prefix gaps directly; for tail gaps use
+`prefR_lt_one` and owner lower bounds.
+Validation command: `lake build AdmissibleCarry.PrefixedPointwise`.
+Status: proved.
+
+## `Prefixed.pref_final_construction`
+
+Lemma name: `AdmissibleCarry.Prefixed.pref_final_construction`
+Source location: public all-index endpoint bundle.
+Purpose: package the final prefixed infinite admissible set, strict
+enumeration, little-oh gap endpoint, and pointwise all-index gap bound.
+Variables: none.
+Hypotheses: none.
+Lean-ish statement: `prefFinalSet.Infinite ∧ PaperAdmSet prefFinalSet ∧
+StrictMono prefSeq ∧ pref_gap_tendsto statement ∧ pref_all_gap_bound statement`.
+Dependencies: `prefFinalSet_infinite`, `prefFinalSet_admissible`,
+`prefSeq_strictMono`, `pref_gap_tendsto`, `pref_all_gap_bound`.
+Expected mathlib APIs: conjunction introduction and range/preimage wrapper.
+Coercion/domain hazards: finite subsets of the range versus index sets.
+Proof strategy: copy the existing paper-set wrapper for `prefSeq` and bundle
+the checked endpoints.
+Validation command: `lake build AdmissibleCarry.PrefixedFinal`.
+Status: proved.
+
+## `published_final_construction`
+
+Lemma name: `AdmissibleCarry.published_final_construction`
+Source location: public root files.
+Purpose: public theorem exported in `Challenge.lean` and `Solution.lean` with
+the all-index final conjunct.
+Variables: none.
+Hypotheses: none.
+Lean-ish statement: there exists an infinite paper-admissible set with a strict
+enumeration, normalized gap tendsto, and
+`∀ n, gap n ≤ (n + 1)^gapExponent`.
+Dependencies: `Prefixed.pref_final_construction` components.
+Expected mathlib APIs: existential/conjunction introduction.
+Coercion/domain hazards: unfold `LegalSchedule.gapExponent` to the literal
+`3 + 2 * Real.sqrt 2`.
+Proof strategy: choose `Prefixed.prefFinalSet` and `Prefixed.prefSeq`.
+Validation command: `lake build Challenge Solution`.
+Status: proved in `Solution.lean`; trusted statement-only target in
+`Challenge.lean`.
+
 ## `finalSet_infinite`
 
 Lemma name: `AdmissibleCarry.finalSet_infinite`

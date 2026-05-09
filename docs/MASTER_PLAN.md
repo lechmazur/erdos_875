@@ -1,6 +1,7 @@
 # Master Plan
 
-Status: M0-M8 are complete for the v10 admissible-carry route.
+Status: M0-M9 are complete for the admissible-carry route and prefixed
+all-index publication endpoint.
 
 ## M0 Project Skeleton
 
@@ -40,3 +41,12 @@ Prove the abstract little-oh wrapper from the analysis-ready record.
 ## M8 Concrete Ceiling Schedule
 
 Instantiate the concrete schedule and prove the final Erdős 875 theorem.
+
+## M9 Prefixed All-Index Endpoint
+
+Define the shifted tail schedule, start from the prefix `{1, 2}` with modulus
+`4`, transfer the tail enumeration through `prefSeq 0 = 1`,
+`prefSeq 1 = 2`, `prefSeq (m + 2) = 4 * S.seq m`, and prove the bundled
+endpoint `AdmissibleCarry.Prefixed.pref_final_construction` with a pointwise
+gap bound for every zero-indexed `n`.  Expose this theorem through root
+`Challenge.lean` and `Solution.lean`.
