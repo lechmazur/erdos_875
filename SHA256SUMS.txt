@@ -21,7 +21,7 @@ b27e7b61994a4f2833e106f0fa4d3ceabc27a9de4bee5391743bf6d419c87557  ./AdmissibleCa
 83a57e8b016d3e85fcc677705dad0813f0397d186fc8ca080b0f6a76a025eeab  ./AdmissibleCarry/Stage.lean
 cbddc89bcb04665c9dcd94fdcb5259d03d6581b4c1b7f339dfdbe1a445860315  ./Challenge.lean
 d8d1da40101d0309f337b00989433af7c6dad497d7f7e5158e251d7179d2945a  ./Makefile
-98a5ac67e6a5f372ade2c394a02e1392bd64fd1098516bc3a29f1aa079a21bc2  ./README.md
+caead6726d36b50c738a8bd6f72f9570b8d6a193e6848830338ce8fe923990a0  ./README.md
 e571b6d550d34c3219fcfd92f6428a5ad983075183bc928c2b74805a5a5d3343  ./STATEMENT_MAP.md
 f98bca6e153419bd93786d72b244f7a5117f462a2ebc3cadb253c2d261bd6aec  ./Solution.lean
 d9afa019803838a3e67c0f3a3105b0a6441a95dcfcda185ce95f5949442d0f50  ./VERSION.txt
@@ -38,6 +38,8 @@ f9fe6fd7aa5fd70dc1d2b3eccd052ba83ceffc6d50226a448889e7bb244ddd6c  ./docs/ROUTE_S
 ec537b222ec855608dec3d582bc10ff57285dffbcb8c79d034eb9dc889c56137  ./docs/STATEMENT_CONTRACT.md
 89aa4e4700d54a9d84e4a2f4790b7475a7e52f1bd66c7803587f62580a214d25  ./docs/TASK_BOARD.md
 72f066d577b32bca552794d031b8c3c5740f8875b487e745348829205a8eb7b9  ./docs/THRESHOLD_LEDGER.md
+9838b12ff0d785273d49981c8cb9bcfd91da1e17282b901dab0d0841328141b0  ./docs/assets/readme-all-index-gap-bound-dark.png
+c45abfaa5a2feda899b6c2ebded53b5c6ef350ec35f6519bf7026bb5d2e0470d  ./docs/assets/readme-all-index-gap-bound-light.png
 11e80eade32b2a931e9e1c4aeeac69748b2e5d43a07b9a93400b7972d6064b57  ./docs/assets/readme-eventual-gap-bound-dark.png
 b518164feec0c9e5b89706ab62edd30bf5d316d867efa621e917572af1863f61  ./docs/assets/readme-eventual-gap-bound-light.png
 51b05d61cc865e5287e8053b7ee02b83ef6a5b1370fd2d36771c56be960b2529  ./docs/assets/readme-normalized-gap-limit-dark.png

@@ -12,13 +12,12 @@ normalized consecutive-gap limit:
   <img src="docs/assets/readme-normalized-gap-limit-dark.png#gh-dark-mode-only" alt="The normalized consecutive-gap quotient tends to zero." width="420">
 </p>
 
-and the pointwise all-index real gap bound
+and the pointwise all-index real gap bound:
 
-```lean
-∀ n : Nat,
-  ((a (n + 1) - a n : Nat) : ℝ) ≤
-    ((n + 1 : Nat) : ℝ) ^ (3 + 2 * Real.sqrt 2)
-```
+<p>
+  <img src="docs/assets/readme-all-index-gap-bound-light.png#gh-light-mode-only" alt="The pointwise all-index real gap bound." width="680">
+  <img src="docs/assets/readme-all-index-gap-bound-dark.png#gh-dark-mode-only" alt="The pointwise all-index real gap bound." width="680">
+</p>
 
 ## Trusted Statement
 
